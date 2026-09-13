@@ -1,0 +1,23 @@
+{
+  "name": "discord-staff-application",
+  "version": "1.0.0",
+  "description": "Discord Staff and Moderator Application System with Admin Panel",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 3000",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "discord",
+    "staff",
+    "moderator",
+    "application",
+    "admin",
+    "panel"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": "24.x"
+  }
+}

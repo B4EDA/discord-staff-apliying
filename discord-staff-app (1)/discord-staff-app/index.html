@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Staff Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ============ APPLICATION FORM ============ */
+        .form-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header .logo {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .form-header h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .level-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 8px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        .level-display {
+            min-width: 60px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 24px;
+            color: #667eea;
+        }
+
+        .level-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        .scenario-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .scenario-box h3 {
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .scenario-box p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .helper-text {
+            font-size: 13px;
+            color: #999;
+            margin-top: 6px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ ADMIN PANEL ============ */
+        .admin-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .admin-header h2 {
+            color: #333;
+            font-size: 28px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-card p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 16px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+        }
+
+        .applications-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .applications-table thead {
+            background: #f8f9fa;
+        }
+
+        .applications-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        .applications-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .applications-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.new {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .badge.reviewed {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge.accepted {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge.rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #5568d3;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h3 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .application-detail {
+            margin-bottom: 20px;
+        }
+
+        .application-detail .label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .application-detail .value {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .status-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .status-btn.accept {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .status-btn.accept:hover {
+            background: #218838;
+        }
+
+        .status-btn.reject {
+            background: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        .status-btn.reject:hover {
+            background: #c0392b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .clear-data-btn {
+            padding: 10px 16px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .clear-data-btn:hover {
+            background: #c0392b;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .form-container,
+            .admin-panel {
+                padding: 20px;
+            }
+
+            .applications-table {
+                font-size: 12px;
+            }
+
+            .applications-table th,
+            .applications-table td {
+                padding: 10px;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div class="nav-tabs">
+            <button class="nav-btn active" onclick="switchPage('form')">Apply Now</button>
+            <button class="nav-btn" onclick="switchPage('admin')">Admin Panel</button>
+        </div>
+
+        <!-- APPLICATION FORM PAGE -->
+        <div id="form" class="page active">
+            <div class="form-container">
+                <div class="form-header">
+                    <div class="logo">🎮</div>
+                    <h1>Discord Staff Application</h1>
+                    <p>Join our moderation and staff team</p>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    ✓ Your application has been submitted successfully!
+                </div>
+
+                <form id="applicationForm">
+                    <!-- Discord Username -->
+                    <div class="form-group">
+                        <label>Discord Username <span class="required">*</span></label>
+                        <input type="text" id="discord_username" placeholder="yourname#0000" required>
+                        <p class="helper-text">Your Discord username with discriminator</p>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label>Full Name <span class="required">*</span></label>
+                        <input type="text" id="full_name" placeholder="John Doe" required>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label>Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+
+                    <!-- Age -->
+                    <div class="form-group">
+                        <label>Age <span class="required">*</span></label>
+                        <input type="number" id="age" min="13" placeholder="18" required>
+                        <p class="helper-text">Must be at least 13 years old</p>
+                    </div>
+
+                    <!-- Server Level -->
+                    <div class="form-group">
+                        <label>What's your level in the server? <span class="required">*</span></label>
+                        <div class="level-slider-container">
+                            <input type="range" id="serverLevel" min="1" max="50" value="5" required>
+                            <span class="level-display" id="levelDisplay">5</span>
+                        </div>
+                        <div class="level-labels">
+                            <span>New Member</span>
+                            <span>Regular</span>
+                            <span>Trusted</span>
+                            <span>Legend</span>
+                        </div>
+                        <p class="helper-text">1 = New member, 50 = Highest level in server</p>
+                    </div>
+
+                    <!-- Scenario Question -->
+                    <div class="form-group">
+                        <label>Moderation Scenario <span class="required">*</span></label>
+                        <div class="scenario-box">
+                            <h3>📋 Scenario:</h3>
+                            <p>You're moderating the server when a member starts sending spam messages and mentions a controversial topic that's causing conflict. The member claims they're just joking around. Other members are getting upset and reporting the messages.</p>
+                            <p style="margin-top: 10px;"><strong>What would you do? (Be specific)</strong></p>
+                        </div>
+                        <textarea id="scenario_response" placeholder="Describe how you would handle this situation as a moderator..." required></textarea>
+                        <p class="helper-text">Your response will help us understand your moderation approach</p>
+                    </div>
+
+                    <!-- Time Commitment -->
+                    <div class="form-group">
+                        <label>How much time can you dedicate per week? <span class="required">*</span></label>
+                        <select id="time_commitment" required>
+                            <option value="">Select availability</option>
+                            <option value="5-10">5-10 hours</option>
+                            <option value="10-15">10-15 hours</option>
+                            <option value="15-20">15-20 hours</option>
+                            <option value="20-plus">20+ hours</option>
+                        </select>
+                    </div>
+
+                    <!-- Role Applied For -->
+                    <div class="form-group">
+                        <label>Which role are you applying for? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="role" value="Moderator" required>
+                                Moderator
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="role" value="Staff Member" required>
+                                Staff Member
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="role" value="Both" required>
+                                Both (if available)
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Why Join -->
+                    <div class="form-group">
+                        <label>Why do you want to join the staff team? <span class="required">*</span></label>
+                        <textarea id="why_join" placeholder="Share your motivation and goals..." required></textarea>
+                    </div>
+
+                    <!-- Agreements -->
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="agree_rules" required>
+                                I agree to follow all server rules and conduct myself professionally
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="agree_privacy" required>
+                                I understand my application will be reviewed by the management team
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit Application</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ADMIN PANEL PAGE -->
+        <div id="admin" class="page">
+            <div class="admin-panel">
+                <div class="admin-header">
+                    <h2>Admin Panel</h2>
+                    <button class="clear-data-btn" onclick="clearAllData()">Clear All Data</button>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <p>Total Applications</p>
+                        <div class="number" id="totalApps">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <p>New Applications</p>
+                        <div class="number" id="newApps">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <p>Accepted</p>
+                        <div class="number" id="acceptedApps">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <p>Rejected</p>
+                        <div class="number" id="rejectedApps">0</div>
+                    </div>
+                </div>
+
+                <div class="filter-controls">
+                    <button class="filter-btn active" onclick="filterApplications('all')">All</button>
+                    <button class="filter-btn" onclick="filterApplications('new')">New</button>
+                    <button class="filter-btn" onclick="filterApplications('accepted')">Accepted</button>
+                    <button class="filter-btn" onclick="filterApplications('rejected')">Rejected</button>
+                </div>
+
+                <div id="applicationsContainer">
+                    <div class="empty-state">
+                        <div class="icon">📋</div>
+                        <p>No applications yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Application Details</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'discord_applications';
+
+        function switchPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(page).classList.add('active');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (page === 'admin') {
+                loadApplications();
+            }
+        }
+
+        // Level slider display
+        document.getElementById('serverLevel')?.addEventListener('input', function() {
+            document.getElementById('levelDisplay').textContent = this.value;
+        });
+
+        // Form submission
+        document.getElementById('applicationForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = {
+                id: Date.now(),
+                timestamp: new Date().toLocaleString(),
+                discord_username: document.getElementById('discord_username').value,
+                full_name: document.getElementById('full_name').value,
+                email: document.getElementById('email').value,
+                age: document.getElementById('age').value,
+                server_level: document.getElementById('serverLevel').value,
+                scenario_response: document.getElementById('scenario_response').value,
+                time_commitment: document.getElementById('time_commitment').value,
+                role_applied: document.querySelector('input[name="role"]:checked').value,
+                why_join: document.getElementById('why_join').value,
+                status: 'new'
+            };
+
+            // Save to localStorage
+            let applications = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            applications.push(formData);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(applications));
+
+            // Show success
+            document.getElementById('successMessage').classList.add('show');
+            this.reset();
+            document.getElementById('serverLevel').value = 5;
+            document.getElementById('levelDisplay').textContent = '5';
+
+            setTimeout(() => {
+                document.getElementById('successMessage').classList.remove('show');
+            }, 4000);
+        });
+
+        function loadApplications() {
+            updateStats();
+            filterApplications('all');
+        }
+
+        function updateStats() {
+            const applications = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const newApps = applications.filter(a => a.status === 'new').length;
+            const acceptedApps = applications.filter(a => a.status === 'accepted').length;
+            const rejectedApps = applications.filter(a => a.status === 'rejected').length;
+
+            document.getElementById('totalApps').textContent = applications.length;
+            document.getElementById('newApps').textContent = newApps;
+            document.getElementById('acceptedApps').textContent = acceptedApps;
+            document.getElementById('rejectedApps').textContent = rejectedApps;
+        }
+
+        function filterApplications(status) {
+            const applications = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const filtered = status === 'all' 
+                ? applications 
+                : applications.filter(a => a.status === status);
+
+            let html = '';
+
+            if (filtered.length === 0) {
+                html = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <p>No applications found</p>
+                    </div>
+                `;
+            } else {
+                html = `
+                    <table class="applications-table">
+                        <thead>
+                            <tr>
+                                <th>Discord User</th>
+                                <th>Level</th>
+                                <th>Role Applied</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filtered.map(app => `
+                                <tr>
+                                    <td><strong>${app.discord_username}</strong></td>
+                                    <td><span class="level-badge">Lvl ${app.server_level}</span></td>
+                                    <td>${app.role_applied}</td>
+                                    <td><span class="badge ${app.status}">${app.status.toUpperCase()}</span></td>
+                                    <td>${app.timestamp}</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn view-btn" onclick="viewApplication(${app.id})">View</button>
+                                            <button class="action-btn delete-btn" onclick="deleteApplication(${app.id})">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+
+            document.getElementById('applicationsContainer').innerHTML = html;
+
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function viewApplication(id) {
+            const applications = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const app = applications.find(a => a.id === id);
+
+            if (!app) return;
+
+            const html = `
+                <div class="application-detail">
+                    <div class="label">Discord Username</div>
+                    <div class="value">${app.discord_username}</div>
+                </div>
+                <div class="application-detail">
+                    <div class="label">Full Name</div>
+                    <div class="value">${app.full_name}</div>
+                </div>
+                <div class="application-detail">
+                    <div class="label">Email</div>
+                    <div class="value">${app.email}</div>
+                </div>
+                <div class="application-detail">
+                    <div class="label">Age</div>
+                    <div class="value">${app.age}</div>
+                </div>
+                <div class="application-detail">
+                    <div class="label">Server Level</div>
+                    <div class="value"><span class="level-badge">Level ${app.server_level}/50</span></div>
+                </div>
+                <div class="application-detail">
+                    <div class="label">Role Applied For</div>
+                    <div class="value">${app.role_applied}</div>
+                </div>
+                <div class="application-detail">
+                    <div class="label">Time Commitment Per Week</div>
+                    <div class="value">${app.time_commitment}</div>
+                </div>
+                <div class="application-detail">
+                    <div class="label">📋 Scenario Response</div>
+                    <div class="value" style="white-space: pre-wrap;">${app.scenario_response}</div>
+                </div>
+                <div class="application-detail">
+                    <div class="label">Why Join Staff Team?</div>
+                    <div class="value" style="white-space: pre-wrap;">${app.why_join}</div>
+                </div>
+                <div class="application-detail">
+                    <div class="label">Submitted</div>
+                    <div class="value">${app.timestamp}</div>
+                </div>
+                <div class="modal-actions">
+                    <button class="status-btn accept" onclick="updateStatus(${id}, 'accepted')">✓ Accept</button>
+                    <button class="status-btn reject" onclick="updateStatus(${id}, 'rejected')">✗ Reject</button>
+                </div>
+            `;
+
+            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function updateStatus(id, status) {
+            const applications = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const app = applications.find(a => a.id === id);
+
+            if (app) {
+                app.status = status;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(applications));
+                closeModal();
+                loadApplications();
+            }
+        }
+
+        function deleteApplication(id) {
+            if (confirm('Are you sure you want to delete this application?')) {
+                let applications = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                applications = applications.filter(a => a.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(applications));
+                loadApplications();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure? This will delete ALL applications permanently!')) {
+                localStorage.removeItem(STORAGE_KEY);
+                loadApplications();
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('detailModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
